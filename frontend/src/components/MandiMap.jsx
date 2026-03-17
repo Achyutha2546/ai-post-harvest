@@ -91,7 +91,7 @@ export default function MandiMap({ mandis, bestMandi, district, userCoords, user
         <div className="p-2 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-lg shadow-inner">
           <MapPin className="w-5 h-5" />
         </div>
-        <h3 className="text-xl font-bold text-white drop-shadow-sm">Route & Distance to Mandis</h3>
+        <h3 className="text-xl font-bold text-white drop-shadow-sm">మార్గం మరియు దూరం</h3>
       </div>
       <div className="h-[300px] w-full z-0 relative">
         <MapContainer 
@@ -113,7 +113,7 @@ export default function MandiMap({ mandis, bestMandi, district, userCoords, user
             <Marker position={[userCoords.lat, userCoords.lng]} icon={userIcon}>
               <Popup>
                 <div className="text-center p-1 bg-slate-900/90 rounded text-slate-200">
-                  <strong className="block text-white text-lg mb-1">Your Location</strong>
+                  <strong className="block text-white text-lg mb-1">మీ స్థానం</strong>
                   <div className="text-sm text-slate-400">{userLocation || district}</div>
                 </div>
               </Popup>
@@ -151,9 +151,9 @@ export default function MandiMap({ mandis, bestMandi, district, userCoords, user
                   <Popup>
                     <div className="text-center p-1 bg-slate-900/90 rounded text-slate-200">
                       <strong className="block text-white text-lg mb-1">{mandi.name}</strong>
-                      <div className="text-indigo-400 font-bold mb-1 drop-shadow-sm">₹{mandi.price} / qtl</div>
-                      <div className="text-sm text-slate-400">{mandi.distance} km away</div>
-                      {isBest && <div className="mt-2 text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-1 rounded font-semibold uppercase tracking-wider">Recommended</div>}
+                      <div className="text-indigo-400 font-bold mb-1 drop-shadow-sm">₹{mandi.price} / క్వింటాల్</div>
+                      <div className="text-sm text-slate-400">{mandi.distance} కి.మీ దూరంలో</div>
+                      {isBest && <div className="mt-2 text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-1 rounded font-semibold uppercase tracking-wider">సూచించబడినది</div>}
                     </div>
                   </Popup>
                 </Marker>

@@ -31,12 +31,12 @@ export default function RecommendationCard({ decision, currentPrice, predictedPr
       <div className="flex justify-between items-start z-10 relative">
         <div className="space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 backdrop-blur-xl shadow-inner border border-white/5">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-400">AI Intelligence Insight</span>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-400">AI నైపుణ్యంతో విశ్లేషణ</span>
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse shadow-[0_0_8px_rgba(99,102,241,1)]"></span>
           </div>
           
           <div className="space-y-1">
-            <span className="text-xs font-black text-slate-500 uppercase tracking-widest">Market Recommendation</span>
+            <span className="text-xs font-black text-slate-500 uppercase tracking-widest">మార్కెట్ సూచన</span>
             <h2 className="text-7xl font-black tracking-tighter text-white drop-shadow-2xl">
               {decision}
             </h2>
@@ -44,21 +44,21 @@ export default function RecommendationCard({ decision, currentPrice, predictedPr
           
           <div className="flex items-center gap-10 mt-6">
             <div className="flex flex-col">
-              <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Current Price</span>
+              <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">ప్రస్తుత ధర</span>
               <span className="text-4xl font-black text-white font-mono leading-none tracking-tighter">₹{currentPrice}</span>
             </div>
             
             <div className="h-12 w-px bg-slate-800"></div>
             
             <div className="flex flex-col">
-              <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Predicted</span>
+              <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">అంచనా ధర</span>
               <span className="text-4xl font-black text-white font-mono leading-none tracking-tighter">₹{predictedPrice}</span>
             </div>
 
             <div className="h-12 w-px bg-slate-800"></div>
 
             <div className="flex flex-col">
-              <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Growth</span>
+              <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">మారిన శాతం</span>
               <span className={`text-4xl font-black font-mono leading-none tracking-tighter ${parseFloat(change) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                 {change}%
               </span>
@@ -75,12 +75,12 @@ export default function RecommendationCard({ decision, currentPrice, predictedPr
         <p className="text-xl font-medium leading-relaxed text-slate-300 max-w-2xl group-hover:text-white transition-colors duration-300">
           {explanation}
         </p>
-        {decision === 'TRAVEL' && bestMandi && (
+        {decision === 'రవాణా చేయండి' && bestMandi && (
           <div className="mt-6 flex items-center gap-3 text-sm bg-indigo-500/10 w-max px-5 py-3 rounded-2xl border border-indigo-500/20 shadow-inner group-hover:bg-indigo-500/20 transition-all duration-300">
              <div className="p-1.5 bg-indigo-500 rounded-lg shadow-lg">
                 <MapPin className="w-4 h-4 text-white" />
              </div>
-             <span className="text-slate-200">Recommended Hub: <strong className="text-white ml-1 font-bold">{bestMandi.name}</strong> <span className="text-indigo-400 ml-2">({bestMandi.distance}km)</span></span>
+             <span className="text-slate-200">సూచించిన మార్కెట్: <strong className="text-white ml-1 font-bold">{bestMandi.name}</strong> <span className="text-indigo-400 ml-2">({bestMandi.distance}కి.మీ)</span></span>
           </div>
         )}
       </div>
