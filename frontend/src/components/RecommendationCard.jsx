@@ -1,7 +1,9 @@
 import React from 'react';
 import { ArrowUpRight, ArrowDownRight, MapPin, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function RecommendationCard({ decision, currentPrice, predictedPrice, change, explanation, bestMandi }) {
+  const { t } = useTranslation();
   const getGradient = () => {
     switch (decision) {
       case 'SELL': return 'from-emerald-500/40 to-emerald-950/40';
@@ -38,7 +40,7 @@ export default function RecommendationCard({ decision, currentPrice, predictedPr
           <div className="space-y-1">
             <span className="text-xs font-black text-slate-500 uppercase tracking-widest">మార్కెట్ సూచన</span>
             <h2 className="text-7xl font-black tracking-tighter text-white drop-shadow-2xl">
-              {decision}
+              {t(decision)}
             </h2>
           </div>
           

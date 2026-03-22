@@ -332,20 +332,20 @@ app.post('/analyze', async (req, res) => {
     const priceChangePct = ((predictedPrice - currentPrice) / currentPrice * 100).toFixed(2);
 
     // --- Decision Engine ---
-    let decision = 'అమ్మేయండి';
+    let decision = 'SELL';
     let bestMandi = [...mandisWithDistance].sort((a, b) => b.price - a.price)[0];
 
     if (predictedPrice > currentPrice + (currentPrice * 0.02)) {
-      decision = 'ఆగండి';
+      decision = 'WAIT';
     } else if (bestMandi.price > currentPrice + 100) {
-      decision = 'రవాణా చేయండి';
+      decision = 'TRAVEL';
     }
 
     // --- AI Explanation Generation ---
     const direction = predictedPrice > currentPrice ? "పెరుగుదలను" : "తగ్గుదలను";
-    const action = decision === 'ఆగండి'
+    const action = decision === 'WAIT'
       ? "పంటను నిల్వ ఉంచండి"
-      : (decision === 'రవాణా చేయండి'
+      : (decision === 'TRAVEL'
         ? `స్టాక్‌ను ${bestMandi.name} మార్కెట్‌కు రవాణా చేయండి`
         : "వెంటనే అమ్మేయండి");
 

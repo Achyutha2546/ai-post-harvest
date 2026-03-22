@@ -1,0 +1,33 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: ai-post-harvest-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # Set this in Render Dashboard for security
+
+  # Frontend Static Site
+  - type: static
+    name: ai-post-harvest-frontend
+    runtime: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: ai-post-harvest-backend
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

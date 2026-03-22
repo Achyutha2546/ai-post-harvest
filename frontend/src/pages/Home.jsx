@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Calendar, Sprout, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const DISTRICT_PLACES = {
   "Alluri Sitharama Raju": ["Paderu", "Rampachodvaram", "Yetapaka", "Chinturu", "Ananthagiri"],
@@ -18,7 +19,7 @@ const DISTRICT_PLACES = {
   "Kurnool": ["Kurnool", "Adoni", "Yemmiganur", "Alur", "Pattikonda", "Kodumur"],
   "Nandyal": ["Nandyal", "Banaganapalli", "Allagadda", "Nandikotkur", "Dhone", "Srisailam"],
   "NTR": ["Vijayawada", "Jaggayyapeta", "Tiruvuru", "Nandigama", "Mylavaram"],
-  "Palnadu": ["Narasaraopet", "Piduguralla", "Sattenapalli", "Chilakaluripet", "Vinukonda", "Gurazala"],
+  "Palnadu": ["Narasaraopet", "Piduguralla", "Sattenapalle", "Chilakaluripet", "Vinukonda", "Gurazala"],
   "Parvathipuram Manyam": ["Parvathipuram", "Salur", "Palakonda", "Kurupam"],
   "Prakasam": ["Ongole", "Markapur", "Kandukur", "Giddalur", "Kanigiri", "Darsi"],
   "Sri Potti Sriramulu Nellore": ["Nellore", "Gudur", "Kavali", "Atmakur", "Rapur", "Venkatagiri"],
@@ -32,6 +33,7 @@ const DISTRICT_PLACES = {
 };
 
 export default function Home() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     crop: '',
     quantity: '',
@@ -60,8 +62,11 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-      // Mock API call since it's an assessment
+      const viteApiBase = import.meta.env.VITE_API_BASE_URL;
+      const API_BASE_URL = viteApiBase 
+        ? (viteApiBase.startsWith('http') ? viteApiBase : `https://${viteApiBase}`) 
+        : 'http://localhost:5000';
+      
       const res = await fetch(`${API_BASE_URL}/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -70,13 +75,18 @@ export default function Home() {
           location: `${formData.place}, ${formData.district}`
         })
       });
+
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status}`);
+      }
+
       const data = await res.json();
-      // Simulate delay for smooth UI experience
       setTimeout(() => {
         navigate('/dashboard', { state: { data, query: formData } });
       }, 800);
     } catch (error) {
-      console.error(error);
+      console.error('Fetch error:', error);
+      alert('విశ్లేషణను పొందడంలో లోపం తలెత్తింది. దయచేసి మళ్ళీ ప్రయత్నించండి.');
       setLoading(false);
     }
   };
@@ -96,14 +106,14 @@ export default function Home() {
           <div className="inline-flex items-center justify-center p-4 bg-gradient-to-br from-indigo-500/20 to-purple-500/10 rounded-2xl mb-5 shadow-[0_8px_30px_rgba(0,0,0,0.5)] border border-indigo-500/30 backdrop-blur-md transform transition duration-500 hover:rotate-12 hover:scale-110">
             <Sprout className="w-12 h-12 text-indigo-400 drop-shadow-sm" />
           </div>
-          <h1 className="text-4xl font-extrabold text-white tracking-tight drop-shadow-sm">Market Intelligence</h1>
-          <p className="text-indigo-200 font-medium mt-3 opacity-80 text-lg">Predict, Plan, and Profit</p>
+          <h1 className="text-4xl font-extrabold text-white tracking-tight drop-shadow-sm">{t('app_name')}</h1>
+          <p className="text-indigo-200 font-medium mt-3 opacity-80 text-lg">{t('tagline')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2 group">
             <label className="text-sm font-bold text-slate-300 flex items-center gap-2 tracking-wide uppercase">
-              <Sprout className="w-4 h-4 text-indigo-400" /> Crop Strategy
+              <Sprout className="w-4 h-4 text-indigo-400" /> {t('crop_strategy')}
             </label>
             <div className="relative">
               <select
@@ -113,7 +123,7 @@ export default function Home() {
                 onChange={handleChange}
                 className="w-full bg-slate-800/80 focus:bg-slate-800 text-white border border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 rounded-2xl px-5 py-4 outline-none transition-all duration-300 shadow-inner font-medium appearance-none cursor-pointer"
               >
-                <option value="" disabled>Select your harvest</option>
+                <option value="" disabled>{t('select_harvest')}</option>
                 <option value="Paddy">Paddy</option>
                 <option value="Cotton">Cotton</option>
                 <option value="Groundnut">Groundnut</option>
@@ -129,7 +139,7 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-5">
             <div className="space-y-2">
               <label className="text-sm font-bold text-slate-300 flex items-center gap-2 tracking-wide uppercase">
-                <span className="text-indigo-400 font-bold bg-slate-800 px-1.5 rounded text-xs py-0.5 border border-slate-700">Q</span> Volume (Qtl)
+                <span className="text-indigo-400 font-bold bg-slate-800 px-1.5 rounded text-xs py-0.5 border border-slate-700">Q</span> {t('volume')}
               </label>
               <input
                 required
@@ -145,7 +155,7 @@ export default function Home() {
 
             <div className="space-y-2">
               <label className="text-sm font-bold text-slate-300 flex items-center gap-2 tracking-wide uppercase">
-                <Calendar className="w-4 h-4 text-indigo-400" /> Date
+                <Calendar className="w-4 h-4 text-indigo-400" /> {t('date')}
               </label>
               <input
                 required
@@ -162,13 +172,13 @@ export default function Home() {
             {/* District Searchable Select */}
             <div className="space-y-2 relative">
               <label className="text-sm font-bold text-slate-300 flex items-center gap-2 tracking-wide uppercase">
-                <MapPin className="w-4 h-4 text-indigo-400" /> District
+                <MapPin className="w-4 h-4 text-indigo-400" /> {t('district')}
               </label>
               <div className="relative">
                 <input
                   required
                   type="text"
-                  placeholder="Search District..."
+                  placeholder={t('search_district')}
                   value={districtSearch || formData.district}
                   onFocus={() => { setShowDistrictList(true); }}
                   onChange={(e) => { setDistrictSearch(e.target.value); setShowDistrictList(true); }}
@@ -204,14 +214,14 @@ export default function Home() {
             {/* Place Searchable Select */}
             <div className={`space-y-2 relative ${!formData.district ? 'opacity-50' : ''}`}>
               <label className="text-sm font-bold text-slate-300 flex items-center gap-2 tracking-wide uppercase">
-                <MapPin className="w-4 h-4 text-indigo-400" /> Place / APMC
+                <MapPin className="w-4 h-4 text-indigo-400" /> {t('place')}
               </label>
               <div className="relative">
                 <input
                   required
                   disabled={!formData.district}
                   type="text"
-                  placeholder={formData.district ? "Search Place..." : "Select District first"}
+                  placeholder={formData.district ? t('search_place') : t('select_district_first')}
                   value={placeSearch || formData.place}
                   onFocus={() => { if(formData.district) setShowPlaceList(true); }}
                   onChange={(e) => { setPlaceSearch(e.target.value); setShowPlaceList(true); }}
@@ -253,11 +263,11 @@ export default function Home() {
             {loading ? (
               <>
                 <Loader2 className="w-6 h-6 animate-spin text-white" />
-                <span className="relative z-10">Running AI Model...</span>
+                <span className="relative z-10">{t('running_model')}</span>
               </>
             ) : (
               <>
-                <span className="relative z-10 text-lg">Generate Insights</span>
+                <span className="relative z-10 text-lg">{t('generate_insights')}</span>
                 <Search className="w-6 h-6 text-indigo-200 group-hover:translate-x-1.5 transition-transform relative z-10" />
               </>
             )}
